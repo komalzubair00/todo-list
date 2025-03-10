@@ -13,28 +13,34 @@ function App() {
   // store list of todo
   const [todos,Settodos]=useState([])
 
- useEffect(() => {
-  // let items = localStorage.getItem("todos");
-  // if (items) {
-    let todos = JSON.parse(localStorage.getItem("todos"));
-   Settodos(todos);
-  // }
+
+
+
+useEffect(() => {
+  let items = JSON.parse(localStorage.getItem("todos")) || [];  // Default empty array if null
+  Settodos(items);
 }, []);
 
-const saveTodo =(params)=>{
-  localStorage.setItem("todos", JSON.stringify(todos))
+const saveTodo = (updatedTodos) => {
+  localStorage.setItem("todos", JSON.stringify(updatedTodos));
 }
 
-    const handleAdd = ()=>{
-      Settodos([...todos, { id: uuidv4(), random: generateRandomString(5,'all'), todo, isCompleted: false, timestamp: new Date().getTime(), createdAt: new Date().toLocaleString()}])
-      settodo("")
-      console.log(todos)
-      // console.log(todo)
-      setTimeout(() => {
-        saveTodo()
+  //   const handleAdd = ()=>{
+  //     Settodos([...todos, { id: uuidv4(), random: generateRandomString(5,'all'), todo, isCompleted: false, timestamp: new Date().getTime(), createdAt: new Date().toLocaleString()}])
+  //     settodo("")
+  //     console.log(todos)
+  //     // console.log(todo)
+  //     setTimeout(() => {
+  //       saveTodo()
         
-      }, 200);
-  }
+  //     }, 200);
+  // }
+  const handleAdd = () => {
+    const newTodos = [...todos, { id: uuidv4(), random: generateRandomString(5, 'all'), todo, isCompleted: false, timestamp: new Date().getTime(), createdAt: new Date().toLocaleString() }];
+    Settodos(newTodos);
+    saveTodo(newTodos);  // Updated state pass karein
+    settodo("");
+  };
   const handleEdit = (e)=>{
     let random = e.target.name
     let update  = todos.filter(item => item.random == random);
@@ -91,7 +97,7 @@ const saveTodo =(params)=>{
           <h2 className='text-2xl font-bold flex justify-center pt-3 underline decoration-violet-900'>Your Todo List</h2>
           <div className="main px-7">
             {todos.length===0 && <div className='font-bold flex justify-center mt-6'>No Todos To Display</div>}
-            {todos.map (item=>{
+            {todos?.map (item=>{
              return <div className="todo-list mt-5  flex items-center">
               <div className='pr-5'>
               <input name={item.random} onChange={handleCheck} id="default-checkbox" type="checkbox" value={todo.isCompleted} class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-xl focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 pl-5"></input>
