@@ -16,14 +16,28 @@ function App() {
 
 
 
-useEffect(() => {
-  let items = JSON.parse(localStorage.getItem("todos")) || [];  // Default empty array if null
-  Settodos(items);
-}, []);
+// useEffect(() => {
+//   let items = JSON.parse(localStorage.getItem("todos")) || [];  // Default empty array if null
+//   Settodos(items);
+// }, []);
 
 const saveTodo = (updatedTodos) => {
   localStorage.setItem("todos", JSON.stringify(updatedTodos));
 }
+
+
+
+useEffect(() => {
+  const savedTodos = localStorage.getItem("todos");
+  
+  try {
+    const parsedTodos = savedTodos ? JSON.parse(savedTodos) : [];  // Handle undefined case
+    Settodos(parsedTodos);
+  } catch (error) {
+    console.error("Error parsing localStorage data:", error);
+    Settodos([]);  // Reset todos if parsing fails
+  }
+}, []);
 
   //   const handleAdd = ()=>{
   //     Settodos([...todos, { id: uuidv4(), random: generateRandomString(5,'all'), todo, isCompleted: false, timestamp: new Date().getTime(), createdAt: new Date().toLocaleString()}])
