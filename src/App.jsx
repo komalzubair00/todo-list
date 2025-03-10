@@ -17,7 +17,7 @@ function App() {
 
 
 useEffect(() => {
-  let items = JSON.parse(localStorage.getItem("todos")) || [];  // Default empty array if null
+  let items = JSON.parse(localStorage?.getItem("todos")) || [];  // Default empty array if null
   Settodos(items);
 }, []);
 
